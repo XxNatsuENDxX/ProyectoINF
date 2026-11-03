@@ -280,3 +280,4 @@ Para el repositorio Git colaborativo, se sugieren los siguientes commits progres
 7. `feat(extensibilidad): agregar NotificacionWhatsApp comprobando principio Open/Closed`
 8. `feat(ui): implementar menu de consola y flujo de demostracion sincronica de 60-90 segundos`
 9. `docs: anadir README detallado y Banco de Preguntas para defensa sincrónica individual`
+

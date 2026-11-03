@@ -80,3 +80,4 @@ public abstract class Notificacion
             throw new InvalidOperationException($"La notificación [{Id}] fue cancelada y no puede enviarse.");
     }
 }
+

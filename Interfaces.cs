@@ -38,3 +38,4 @@ public interface ICancelable
     bool EsCancelada { get; }
     void Cancelar(string motivo);
 }
+

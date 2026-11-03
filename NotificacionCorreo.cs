@@ -110,3 +110,4 @@ public class NotificacionCorreo : Notificacion, IProgramable, IConfirmable, IReg
         return $"[AUDITORÍA-CORREO] ID={Id} | Para={Destinatario} | Asunto={Asunto} | Estado={Estado}";
     }
 }
+

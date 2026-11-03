@@ -82,3 +82,4 @@ public class NotificacionSMS : Notificacion, IConfirmable, IRegistrable
         return $"[AUDITORÍA-SMS] ID={Id} | Destino={Destinatario} | Caracteres={Mensaje.Length} | Prioridad={Prioridad} | Estado={Estado}";
     }
 }
+

@@ -59,3 +59,4 @@ public class NotificacionWhatsApp : Notificacion, IConfirmable, IRegistrable
         return $"[AUDITORÍA-WHATSAPP] ID={Id} | Número={Destinatario} | Prioridad={Prioridad} | Estado={Estado}";
     }
 }
+

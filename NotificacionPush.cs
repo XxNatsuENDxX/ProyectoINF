@@ -61,3 +61,4 @@ public class NotificacionPush : Notificacion, IProgramable, IRegistrable
         return $"[AUDITORÍA-PUSH] ID={Id} | Token={Destinatario} | Prioridad={Prioridad} | Estado={Estado}";
     }
 }
+

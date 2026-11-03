@@ -467,3 +467,4 @@ En el último minuto de la defensa, el profesor solicitará una modificación r�
 
 ---
 *¡Con esta preparación y el código del proyecto, el equipo tiene garantizada una defensa sincrónica sobresaliente!*
+

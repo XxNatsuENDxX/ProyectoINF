@@ -296,3 +296,4 @@ void MostrarEncabezado()
     Console.WriteLine("================================================================================");
     Console.ResetColor();
 }
+

@@ -26,3 +26,4 @@ public enum Prioridad
     Alta = 3,
     Critica = 4
 }
+
