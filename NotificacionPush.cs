@@ -1,14 +1,7 @@
 namespace SistemaNotificaciones;
 
 /// <summary>
-/// Canal de notificación mediante Alerta Push a dispositivos móviles (FCM / APNs).
-/// Implementa IProgramable e IRegistrable.
-/// 
-/// JUSTIFICACIÓN DE DISEÑO:
-/// NotificacionPush NO implementa IConfirmable porque las alertas push estándar no garantizan
-/// un acuse de recibo de lectura bidireccional. Si IConfirmable fuera obligatorio en Notificacion,
-/// esta clase se vería obligada a implementar un método ficticio o lanzar NotSupportedException,
-/// violando el Principio de Segregación de Interfaces (ISP).
+/// Canal de notificación mediante Alerta Push a dispositivos móviles.
 /// </summary>
 public class NotificacionPush : Notificacion, IProgramable, IRegistrable
 {
@@ -21,9 +14,6 @@ public class NotificacionPush : Notificacion, IProgramable, IRegistrable
         TokenDispositivo = Destinatario;
     }
 
-    /// <summary>
-    /// Sobrescritura (override) del método polimórfico Enviar() para servicios Push.
-    /// </summary>
     public override void Enviar()
     {
         ValidarEnvioPendiente();
@@ -40,9 +30,6 @@ public class NotificacionPush : Notificacion, IProgramable, IRegistrable
         }
     }
 
-    /// <summary>
-    /// Implementación del contrato IProgramable.
-    /// </summary>
     public void Programar(DateTime fechaHora)
     {
         if (fechaHora <= DateTime.Now)
@@ -53,12 +40,8 @@ public class NotificacionPush : Notificacion, IProgramable, IRegistrable
         Console.WriteLine($"  [PUSH PROGRAMADO] Alerta encolada para el dispositivo {Destinatario} a las {FechaProgramada:g}.");
     }
 
-    /// <summary>
-    /// Implementación del contrato IRegistrable.
-    /// </summary>
     public string ObtenerRegistro()
     {
         return $"[AUDITORÍA-PUSH] ID={Id} | Token={Destinatario} | Prioridad={Prioridad} | Estado={Estado}";
     }
 }
-

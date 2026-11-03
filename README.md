@@ -228,7 +228,7 @@ n.Enviar();
 | **Tipo de retorno** | Debe ser el mismo (o covariante). | **No basta con cambiar el retorno** para sobrecargar un método. |
 | **Ejemplo en el código** | `NotificacionSMS.Enviar()` sobrescribe `Notificacion.Enviar()`. | `Gestor.Agregar(Notificacion)` y `Gestor.Agregar(IEnumerable<Notificacion>)`. |
 
-> **Nota para el examen:** En C#, la firma para resolver sobrecargas solo incluye el nombre del método y sus parámetros. Si dos métodos comparten el mismo nombre y los mismos parámetros, pero difieren solo en el tipo de retorno (`public int Enviar(int c)` vs `public double Enviar(int c)`), el compilador arroja error CS0111 (*duplicate signature*), ya que en llamadas donde no se use el valor de retorno sería imposible determinar a cuál invocar.
+> **Nota técnica:** En C#, la firma para resolver sobrecargas solo incluye el nombre del método y sus parámetros. Si dos métodos comparten el mismo nombre y los mismos parámetros, pero difieren solo en el tipo de retorno (`public int Enviar(int c)` vs `public double Enviar(int c)`), el compilador arroja error CS0111 (*duplicate signature*), ya que en llamadas donde no se use el valor de retorno sería imposible determinar a cuál invocar.
 
 ### 3.4. Interfaces como Capacidades Opcionales (ISP)
 - `IProgramable`, `IConfirmable` e `IRegistrable` modelan comportamientos **transversales u opcionales**.
@@ -243,17 +243,17 @@ n.Enviar();
 ### 3.6. Desacoplamiento del `GestorNotificaciones`
 El gestor no contiene condicionales basados en tipos concretos:
 ```csharp
-// CORRECTO (Polimórfico - Abierto para extensión, cerrado para modificación):
+// Enfoque polimórfico (Abierto para extensión, cerrado para modificación):
 foreach (Notificacion n in _notificaciones.OrderByDescending(n => n.Prioridad))
 {
     n.Enviar();
 }
 
-// ANTI-PATRÓN RECHAZADO:
+// Enfoque acoplado (no recomendado):
 // if (n is NotificacionSMS) ((NotificacionSMS)n).Enviar();
 // else if (n is NotificacionCorreo) ((NotificacionCorreo)n).Enviar();
 ```
-El anti-patrón acopla el gestor a cada canal existente, obligando a modificar el gestor cada vez que surja un nuevo canal (`NotificacionWhatsApp`, `NotificacionTelegram`).
+El enfoque acoplado liga el gestor a cada canal existente, obligando a modificar el gestor cada vez que surja un nuevo canal (`NotificacionWhatsApp`, `NotificacionTelegram`).
 
 ---
 
@@ -271,9 +271,8 @@ c:\Users\cesar\Desktop\ProyectoINF\
 ├── NotificacionPush.cs           # Canal Push a móviles (no confirmable)
 ├── NotificacionWhatsApp.cs       # Canal WhatsApp (demostración de extensibilidad)
 ├── GestorNotificaciones.cs       # Orquestador con List<Notificacion>, sobrecargas y orden por prioridad
-├── Program.cs                    # Menú interactivo y demostración de 60-90 segundos
-├── README.md                     # Documentación técnica general del proyecto
-└── BANCO_PREGUNTAS_DEFENSA.md    # Guía exhaustiva de preparación para la defensa oral sincrónica
+├── Program.cs                    # Menú interactivo y demostración completa
+└── README.md                     # Documentación técnica general del proyecto
 ```
 
 ---
@@ -302,7 +301,7 @@ c:\Users\cesar\Desktop\ProyectoINF\
 
 ### Opciones del Menú
 Al iniciar la aplicación, se mostrará el menú principal:
-1. **Ejecutar Demostración Sincrónica Oficial (60-90 segundos):** Ejecuta de forma continua todo el flujo requerido por el docente (creación, lote, programación, envío por prioridad, confirmación y reporte).
+1. **Ejecutar Demostración Completa del Sistema:** Ejecuta de forma continua todo el flujo funcional del sistema (creación, lote, programación, envío por prioridad, confirmación y reporte).
 2. **Polimorfismo Dinámico:** Demuestra en consola el Tipo Declarado vs. Tipo Real.
 3. **Sobrecarga vs. Sobrescritura:** Muestra las diferencias prácticas y de firma.
 4. **Interfaces de Capacidad:** Evalúa con `is` las capacidades de cada canal.
@@ -322,6 +321,6 @@ Para el repositorio Git colaborativo, se sugieren los siguientes commits progres
 5. `feat(push): implementar NotificacionPush modelando canal unidireccional sin confirmacion`
 6. `feat(gestor): implementar GestorNotificaciones con coleccion polimorfica y orden por prioridad`
 7. `feat(extensibilidad): agregar NotificacionWhatsApp comprobando principio Open/Closed`
-8. `feat(ui): implementar menu de consola y flujo de demostracion sincronica de 60-90 segundos`
-9. `docs: anadir README detallado y Banco de Preguntas para defensa sincrónica individual`
+8. `feat(ui): implementar menu de consola y flujo de demostracion completo`
+9. `docs: anadir README detallado y diagrama de clases UML`
 

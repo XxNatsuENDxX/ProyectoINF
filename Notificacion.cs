@@ -1,12 +1,8 @@
 namespace SistemaNotificaciones;
 
 /// <summary>
-/// Clase base abstracta que define el contrato común y los atributos compartidos
-/// por todos los canales de notificación del sistema.
-/// 
-/// DECISIÓN DE DISEÑO:
-/// Es 'abstract' porque representa un concepto genérico: no tiene sentido instanciar una
-/// "Notificacion" sin especificar a través de qué medio físico se transmitirá (SMS, Correo, Push, etc.).
+/// Clase base abstracta que define los datos y el comportamiento común
+/// para los distintos canales de notificación del sistema.
 /// </summary>
 public abstract class Notificacion
 {
@@ -14,14 +10,7 @@ public abstract class Notificacion
     public string Destinatario { get; }
     public string Mensaje { get; }
     public Prioridad Prioridad { get; }
-
-    /// <summary>
-    /// El estado tiene 'protected set' para que únicamente la jerarquía de herencia
-    /// (la clase base o sus clases derivadas) pueda gobernar las transiciones de estado.
-    /// Esto evita que un consumidor externo asigne estados inconsistentes de forma arbitraria.
-    /// </summary>
     public EstadoNotificacion Estado { get; protected set; }
-
     public DateTime FechaCreacion { get; }
 
     /// <summary>
@@ -30,8 +19,8 @@ public abstract class Notificacion
     public string Contenido => Mensaje;
 
     /// <summary>
-    /// Constructor protegido de la clase base. Realiza validaciones tempranas
-    /// para impedir la creación de objetos en un estado inválido o incompleto.
+    /// Constructor protegido de la clase base.
+    /// Valida que los datos obligatorios no sean nulos ni vacíos.
     /// </summary>
     protected Notificacion(string destinatario, string mensaje, Prioridad prioridad)
     {
@@ -50,17 +39,12 @@ public abstract class Notificacion
     }
 
     /// <summary>
-    /// Operación polimórfica principal.
-    /// Es abstracta porque cada canal concreto (SMS, Correo, Push, WhatsApp) requiere una lógica
-    /// de envío totalmente distinta. La clase base impone el contrato a todas las subclases.
-    /// En tiempo de ejecución, el despacho dinámico invoca la implementación 'override' del objeto real.
+    /// Ejecuta el proceso de envío de la notificación a través del canal correspondiente.
     /// </summary>
     public abstract void Enviar();
 
     /// <summary>
-    /// Método virtual con una implementación base general.
-    /// Las clases derivadas pueden invocarlo con base.Resumen() o sobrescribirlo (override)
-    /// para añadir información especializada.
+    /// Genera una descripción legible de la notificación y su estado actual.
     /// </summary>
     public virtual string Resumen()
     {
@@ -68,8 +52,7 @@ public abstract class Notificacion
     }
 
     /// <summary>
-    /// Método auxiliar compartido para verificar si la notificación ya fue enviada previamente.
-    /// Demuestra reutilización de lógica común en la clase base.
+    /// Valida que la notificación se encuentre en un estado apto para su envío.
     /// </summary>
     protected void ValidarEnvioPendiente()
     {
@@ -80,4 +63,3 @@ public abstract class Notificacion
             throw new InvalidOperationException($"La notificación [{Id}] fue cancelada y no puede enviarse.");
     }
 }
-
