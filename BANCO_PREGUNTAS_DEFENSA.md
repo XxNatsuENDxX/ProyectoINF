@@ -128,7 +128,7 @@ El docente iniciará la evaluación pidiendo:
 
 ### Pregunta 5.1: ¿Por qué `Estado` puede tener `set` protegido en lugar de `set` público?
 - **Respuesta Sólida:**  
-  *"Porque el estado de una notificación debe seguir una máquina de estados consistente (`Pendiente` $\rightarrow$ `Programada` / `Enviada` $\rightarrow$ `Confirmada` / `Fallida`). Con `protected set`, únicamente la clase base `Notificacion` y sus clases derivadas pueden modificar el estado como consecuencia de operaciones formales del dominio (como ejecutar `Enviar()` o `ConfirmarEntrega()`).*  
+  *"Porque el estado de una notificación debe seguir una máquina de estados consistente (`Pendiente` → `Programada` / `Enviada` → `Confirmada` / `Fallida`). Con `protected set`, únicamente la clase base `Notificacion` y sus clases derivadas pueden modificar el estado como consecuencia de operaciones formales del dominio (como ejecutar `Enviar()` o `ConfirmarEntrega()`).*  
   *Si tuviera `set` público, cualquier consumidor externo del sistema podría asignar arbitrariamente `notificacion.Estado = EstadoNotificacion.Confirmada;` sin que la notificación haya sido enviada ni confirmada por el canal real, corrompiendo la integridad del sistema."*
 
 ---

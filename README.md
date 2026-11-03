@@ -14,16 +14,16 @@ El sistema orquesta el envío de notificaciones a través de diversos canales de
 - **Alerta Push (`NotificacionPush`):** Mensajería hacia dispositivos móviles mediante tokens. Soporta programación diferida y auditoría; no soporta confirmación de entrega bidireccional.
 - **WhatsApp Business (`NotificacionWhatsApp`):** Canal de mensajería instantánea para demostrar la extensibilidad del sistema sin modificar el procesador central.
 
-Todas las notificaciones son administradas por `GestorNotificaciones`, el cual implementa una política de despacho basada en prioridades (`Critica` $\rightarrow$ `Alta` $\rightarrow$ `Normal` $\rightarrow$ `Baja`) consumiendo únicamente el contrato de la clase base `Notificacion`.
+Todas las notificaciones son administradas por `GestorNotificaciones`, el cual implementa una política de despacho basada en prioridades (`Critica` → `Alta` → `Normal` → `Baja`) consumiendo únicamente el contrato de la clase base `Notificacion`.
 
 ---
 
 ## 2. Diagrama de Clases UML
 
+### 2.1. Diagrama Mermaid
+
 ```mermaid
 classDiagram
-    direction TB
-
     class EstadoNotificacion {
         <<enumeration>>
         Pendiente
@@ -36,21 +36,19 @@ classDiagram
 
     class Prioridad {
         <<enumeration>>
-        Baja = 1
-        Normal = 2
-        Alta = 3
-        Critica = 4
+        Baja
+        Normal
+        Alta
+        Critica
     }
 
     class IProgramable {
         <<interface>>
-        +DateTime? FechaProgramada
         +Programar(DateTime fechaHora) void
     }
 
     class IConfirmable {
         <<interface>>
-        +DateTime? FechaConfirmacion
         +ConfirmarEntrega() void
     }
 
@@ -61,7 +59,6 @@ classDiagram
 
     class ICancelable {
         <<interface>>
-        +bool EsCancelada
         +Cancelar(string motivo) void
     }
 
@@ -73,18 +70,12 @@ classDiagram
         +Prioridad Prioridad
         +EstadoNotificacion Estado
         +DateTime FechaCreacion
-        +string Contenido
-        #Notificacion(destinatario, mensaje, prioridad)
-        +Enviar()* void
+        +Enviar() void
         +Resumen() string
-        #ValidarEnvioPendiente() void
     }
 
     class NotificacionCorreo {
         +string Asunto
-        +DateTime? FechaProgramada
-        +DateTime? FechaConfirmacion
-        +NotificacionCorreo(destinatario, asunto, mensaje, prioridad)
         +Enviar() void
         +Enviar(string remitentePersonalizado) void
         +Resumen() string
@@ -95,10 +86,6 @@ classDiagram
     }
 
     class NotificacionSMS {
-        +const int MaximoCaracteres = 160
-        +DateTime? FechaConfirmacion
-        +NotificacionSMS(telefono, mensaje, prioridad)
-        -ValidarMensajeSMS(mensaje)$ string
         +Enviar() void
         +ConfirmarEntrega() void
         +ObtenerRegistro() string
@@ -106,27 +93,22 @@ classDiagram
 
     class NotificacionPush {
         +string TokenDispositivo
-        +DateTime? FechaProgramada
-        +NotificacionPush(tokenDispositivo, mensaje, prioridad)
         +Enviar() void
         +Programar(DateTime fechaHora) void
         +ObtenerRegistro() string
     }
 
     class NotificacionWhatsApp {
-        +DateTime? FechaConfirmacion
-        +NotificacionWhatsApp(numero, mensaje, prioridad)
         +Enviar() void
         +ConfirmarEntrega() void
         +ObtenerRegistro() string
     }
 
     class GestorNotificaciones {
-        -List~Notificacion~ _notificaciones
-        +IReadOnlyList~Notificacion~ Notificaciones
+        +IReadOnlyList Notificaciones
         +int Total
         +Agregar(Notificacion notificacion) void
-        +Agregar(IEnumerable~Notificacion~ notificaciones) void
+        +Agregar(IEnumerable notificaciones) void
         +ProcesarTodas() void
         +ProgramarCompatibles(DateTime fechaHora) void
         +ConfirmarCompatibles() void
@@ -151,9 +133,71 @@ classDiagram
     IConfirmable <|.. NotificacionWhatsApp
     IRegistrable <|.. NotificacionWhatsApp
 
-    GestorNotificaciones o-- Notificacion : contiene 0..*
-    Notificacion --> EstadoNotificacion : posee
-    Notificacion --> Prioridad : clasificada por
+    GestorNotificaciones o-- Notificacion
+    Notificacion --> EstadoNotificacion
+    Notificacion --> Prioridad
+```
+
+### 2.2. Diagrama Estructural (Vista de Texto / ASCII)
+
+```text
+                           ┌────────────────────────┐
+                           │     <<interface>>      │
+                           │      IProgramable      │
+                           ├────────────────────────┤
+                           │ +Programar(fecha) void │
+                           └───────────▲────────────┘
+                                       │
+           ┌───────────────────────────┴────────────────────────────────┐
+           │ (implementa)              │ (implementa)                   │
+           │                           │                                │
+ ┌─────────┴──────────────┐  ┌─────────┴──────────────┐                 │
+ │   NotificacionCorreo   │  │    NotificacionPush    │                 │
+ ├────────────────────────┤  ├────────────────────────┤                 │
+ │ +Asunto: string        │  │ +TokenDispositivo      │                 │
+ │ +Enviar() void         │  │ +Enviar() void         │                 │
+ └─────────┬──────────────┘  └─────────┬──────────────┘                 │
+           │                           │                                │
+           │ (hereda de)               │ (hereda de)                    │
+           └─────────────┐       ┌─────┘                                │
+                         │       │                                      │
+                    ┌────▼───────┴───────────┐                          │
+                    │      <<abstract>>      │                          │
+                    │      Notificacion      │                          │
+                    ├────────────────────────┤                          │
+                    │ +Id: string            │                          │
+                    │ +Destinatario: string  │                          │
+                    │ +Mensaje: string       │                          │
+                    │ +Prioridad: Prioridad  │                          │
+                    │ +Estado: EstadoNotif   │                          │
+                    ├────────────────────────┤                          │
+                    │ +Enviar()* void        │                          │
+                    │ +Resumen() string      │                          │
+                    └────▲───────────▲───────┘                          │
+                         │           │                                  │
+           ┌─────────────┘           └─────────────┐                    │
+           │ (hereda de)               (hereda de) │                    │
+ ┌─────────┴──────────────┐  ┌─────────────────────┴──┐                 │
+ │    NotificacionSMS     │  │  NotificacionWhatsApp  │                 │
+ ├────────────────────────┤  ├────────────────────────┤                 │
+ │ +MaximoChars: 160      │  │ +Enviar() void         │                 │
+ │ +Enviar() void         │  │ +ConfirmarEntrega()    │                 │
+ └─────────┬──────────────┘  └─────────┬──────────────┘                 │
+           │                           │                                │
+           │ (implementa)              │ (implementa)                   │
+           └───────────────────────────┬────────────────────────────────┘
+                                       │
+                           ┌───────────▼────────────┐
+                           │     <<interface>>      │
+                           │      IConfirmable      │
+                           ├────────────────────────┤
+                           │ +ConfirmarEntrega()    │
+                           └────────────────────────┘
+
+ Relación con el Gestor:
+ ┌─────────────────────────┐           contiene           ┌────────────────────────┐
+ │  GestorNotificaciones   │ ◆──────────────────────────> │   List<Notificacion>   │
+ └─────────────────────────┘                              └────────────────────────┘
 ```
 
 ---
