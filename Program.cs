@@ -1,3 +1,13 @@
+// ============================================================================
+// ASIGNATURA: Programación II (INF-512)
+// PROYECTO:   Sistema Multicanal de Notificaciones — Reto de Diseño Polimórfico
+// INTEGRANTES:
+//   - Alcequiez Peña, Jeremy Junior
+//   - Aybar Montes De Oca, Cesar Adrian
+//   - Faneyte Carbuccia, Dennis Keith
+//   - Garcia Disla, Jose Armando
+// ============================================================================
+
 using SistemaNotificaciones;
 
 Console.Title = "INF-512 | Sistema Multicanal de Notificaciones";
@@ -238,6 +248,13 @@ void MostrarEncabezado()
     Console.WriteLine("                   UNIVERSIDAD AUTÓNOMA DE SANTO DOMINGO (UASD)                 ");
     Console.WriteLine("                  FACULTAD DE CIENCIAS - ESCUELA DE INFORMÁTICA                 ");
     Console.WriteLine("                       INF-512 | PROGRAMACIÓN II                                ");
+    Console.WriteLine("                  Reto de Diseño Polimórfico - Notificaciones                   ");
+    Console.WriteLine("--------------------------------------------------------------------------------");
+    Console.WriteLine(" Integrantes del Equipo:                                                        ");
+    Console.WriteLine("   • Alcequiez Peña, Jeremy Junior                                              ");
+    Console.WriteLine("   • Aybar Montes De Oca, Cesar Adrian                                          ");
+    Console.WriteLine("   • Faneyte Carbuccia, Dennis Keith                                            ");
+    Console.WriteLine("   • Garcia Disla, Jose Armando                                                 ");
     Console.WriteLine("================================================================================");
     Console.ResetColor();
 }

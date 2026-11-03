@@ -1,6 +1,16 @@
 # Sistema Multicanal de Notificaciones — Reto de Diseño Polimórfico
 **Asignatura:** Lenguaje de Programación II (INF-512) | **Lenguaje:** C# (.NET 8.0+)  
+**Institución:** Universidad Autónoma de Santo Domingo (UASD) - Facultad de Ciencias  
 **Tema:** Jerarquías de Clases, Polimorfismo Dinámico, Interfaces, Sobrecarga y Colecciones de Objetos  
+
+---
+
+## Integrantes del Equipo
+
+- **Alcequiez Peña, Jeremy Junior**
+- **Aybar Montes De Oca, Cesar Adrian**
+- **Faneyte Carbuccia, Dennis Keith**
+- **Garcia Disla, Jose Armando**
 
 ---
 
